@@ -20,6 +20,12 @@ This action checks if a string must contains or not in the pull request body.
 
 **Optional** String that must not contains in pull request body. Defaults to empty string.
 
+## Env
+
+### GITHUB_TOKEN
+
+GitHub token.
+
 ## Example usage
 
 ```yaml
@@ -27,4 +33,6 @@ uses: gandarez/check-pr-body-action@v1
   with:
     pr_number: ${{ github.event.number }}
     contains: "something"
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
