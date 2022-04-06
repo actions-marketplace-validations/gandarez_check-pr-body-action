@@ -1,0 +1,24 @@
+name: 'Check PR Body'
+description: 'Check if a Pull Request contains or not the specific words'
+branding:
+  icon: 'git-pull-request'
+  color: 'yellow'
+inputs:
+  pr_number:
+    description: 'Pull Request number'
+    required: true
+  contains:
+    description: 'String that must contains in pull request body'
+    required: false
+    default: ''
+  not_contains:
+    description: 'String that must not contains in pull request body'
+    required: false
+    default: ''
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.pr_number }}
+    - ${{ inputs.contains }}
+    - ${{ inputs.not_contains }}
