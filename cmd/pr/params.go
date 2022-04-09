@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"regexp"
 	"strconv"
 	"strings"
 
@@ -13,8 +12,6 @@ import (
 
 	"golang.org/x/oauth2"
 )
-
-var tokenRegex = regexp.MustCompile(`[0-9a-fA-F]{40}`) // nolint
 
 // Params contains pr command parameters.
 type Params struct {
@@ -26,16 +23,6 @@ type Params struct {
 
 // LoadParams loads pr config params.
 func LoadParams() (Params, error) {
-	var ghToken string
-
-	if ghTokenStr := os.Getenv("GITHUB_TOKEN"); ghTokenStr != "" {
-		if !tokenRegex.MatchString(ghTokenStr) {
-			return Params{}, fmt.Errorf("invalid github_token format: %s", ghTokenStr)
-		}
-
-		ghToken = ghTokenStr
-	}
-
 	var (
 		owner      string
 		repository string
@@ -47,6 +34,8 @@ func LoadParams() (Params, error) {
 		owner = splitted[0]
 		repository = splitted[1]
 	}
+
+	ghToken := os.Getenv("GITHUB_TOKEN")
 
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: ghToken},
